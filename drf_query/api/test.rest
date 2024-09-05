@@ -1,0 +1,14 @@
+POST http://127.0.0.1:8000/signup/
+Content-Type: application/json
+
+{
+    "username":"James",
+    "password":"James1234.",
+    "email":"james@gmail.com"
+}
+
+{
+    "username":"Manny",
+    "password":"Manny1234.",
+    "email":"manny@gmail.com"
+}

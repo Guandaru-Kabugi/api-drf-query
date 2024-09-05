@@ -1,0 +1,5 @@
+django
+djangorestframework
+django-extensions
+python-dotenv
+mysql-connector-python
