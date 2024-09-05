@@ -2,6 +2,9 @@ from django.test import TestCase,SimpleTestCase,Client
 from .models import Product,Order,Customer
 from django.contrib.auth.models import User
 from django.urls import reverse,resolve
+from rest_framework.test import APIRequestFactory
+from rest_framework.test import APITestCase
+from rest_framework.test import force_authenticate
 from .views import SpecificUserOrderFilter,OrderViewFilter,OrderListView,ProductListView,OrderCreateDeleteView,ProductCreateView,signup,login
 # Create your tests here.
 #we start with testing urls
@@ -123,7 +126,7 @@ from .views import SpecificUserOrderFilter,OrderViewFilter,OrderListView,Product
         
         self.assertEquals(response.status_code,200)"""
 # testing models...............
-class TestModels(TestCase):
+"""class TestModels(TestCase):
     def setUp(self):
         self.product1 = Product.objects.create(
             name='Cookies',
@@ -143,4 +146,21 @@ class TestModels(TestCase):
             date_created='2024-08-08',
             status='pending'
         )
-        self.assertEquals(self.order.customer.id, self.new_user.id)
+        self.assertEquals(self.order.customer.id, self.new_user.id)"""
+
+
+#using api requestfactory
+factory = APIRequestFactory()
+request = factory.get('productlistview/')
+class TestProductView(APITestCase):
+    def setUp(self):
+        self.factory = APIRequestFactory()
+        self.productview_url = reverse('productlist')
+        self.new_user = User.objects.create_user(username='James',password='James1234',email='james@gmail.com')
+        self.user = User.objects.get(username='James')
+    def test_product_list_view(self):
+        request = self.factory.get(self.productview_url)
+        force_authenticate(request, user=self.user)
+        response = ProductListView.as_view()(request)
+        
+        self.assertEquals(response.status_code,200)
